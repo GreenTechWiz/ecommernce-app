@@ -1,3 +1,4 @@
+
 <h1>All Products</h1>
 
 
@@ -5,7 +6,7 @@
 <!-- Loop our @product varible, defined in out products_controller, displaying each ones name -->
 <% @products.each do |product| %>
   <div class="product">
-    <h3><%= product.name %></h3>
+    <h3><%= link_to("#{product.name}", "/products/#{product.id}") %></h3>
     <p><%= product.price_format %></p>
   </div>
 <% end %>
