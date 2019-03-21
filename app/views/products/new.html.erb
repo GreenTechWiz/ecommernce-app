@@ -5,17 +5,23 @@
   <textarea name="content" id="content"></textarea>
   <input type="submit" value="Create Chirp" > -->
 
-  <%= label_tag('name', 'Enter Product:') %>
+  <%= label_tag(:name, 'Enter Product:') %>
   <br>
   <%= text_field_tag('name') %>
   <br>
+  <%= label_tag(:category_id, "Select a Product Category:") %>
   <br>
-  <%= label_tag('description', 'Enter Description') %>
+  <%= select_tag(:category_id, options_from_collection_for_select(@categories, :id, :name), prompt: "Select Product Category")%>
+  <br>
+  <%= label_tag(:description, 'Enter Description') %>
   <br>
   <%= text_area_tag('description', nil, size: "20x10") %>
   <br>
+  <%= label_tag(:image_tag, "Enter a URL to your product's image:") %>
   <br>
-  <%= label_tag('price', 'Enter Price') %>
+  <%= text_field_tag(:image_tag) %>
+  <br>
+  <%= label_tag(:price, 'Enter Price') %>
   <br>
   <%= number_field_tag('price') %>
   <br>

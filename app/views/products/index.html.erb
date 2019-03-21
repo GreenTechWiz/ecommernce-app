@@ -1,12 +1,17 @@
+<h1>All Products:</h1>
 
-<h1>All Products</h1>
+<%= form_tag("/products", method: :get) do %>
+  <%= label_tag(:category_id, "Select a Product Category to search by:") %>
+  <%= select_tag(:category_id, options_from_collection_for_select(@categories, :id, :name), prompt: "Select Product Category")%>
+  <%= submit_tag("Search") %>
+<% end %>
 
-
-<!-- File is an HTML file but the lines we write here is in ruby tags -->
-<!-- Loop our @product varible, defined in out products_controller, displaying each ones name -->
 <% @products.each do |product| %>
   <div class="product">
-    <h3><%= link_to("#{product.name}", "/products/#{product.id}") %></h3>
+    <h3><%= product.name %></h3>
     <p><%= product.price_format %></p>
+    <%= link_to("/products/#{product.id}") do %>
+      <%= image_tag(product.image_tag) %>
+    <% end %>
   </div>
 <% end %>
