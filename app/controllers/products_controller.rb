@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   def index
     #if this exist, then do this
-    if params[:caegory_id] && params[:category_id] != ""
+    if params[:category_id] && Category.ids.include?(params[:category_id].to_i)
       @category = Category.find(params[:category_id])
       @products = @category.products
     else
@@ -32,28 +32,28 @@ class ProductsController < ApplicationController
     redirect_to "/products/#{product.id}"
   end
 
-def edit
-  @product = Product.find(params[:id]) 
-  @categories = Category.all 
-end
+  def edit
+    @product = Product.find(params[:id]) 
+    @categories = Category.all 
+  end
 
-def update
-  product = Product.find(params[:id])
-  product.update(name: params[:name],
-                description: params[:description],
-                price: params[:price],
-                image_tag: params[:image_tag],
-                category_id: params[:category_id]
-                )
+  def update
+    product = Product.find(params[:id])
+    product.update(name: params[:name],
+                  description: params[:description],
+                  price: params[:price],
+                  image_tag: params[:image_tag],
+                  category_id: params[:category_id]
+                  )
 
-  redirect_to "/products/#{product.id}"
-end
+    redirect_to "/products/#{product.id}"
+  end
 
-def destroy
-  product = Product.find(params[:id])
-  product.destroy
+  def destroy
+    product = Product.find(params[:id])
+    product.destroy
 
-  redirect_to "/products"
-end
+    redirect_to "/products"
+  end
 
 end
