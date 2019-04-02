@@ -25,7 +25,7 @@
             <% end %>
           </li>
 
-          <% if user_signed_in? %>
+          <% if user_signed_in? && current_user.is_admin? %>
             <li class="nav-item <%= 'active' if current_page?('/products/new') %>">
               <%= link_to("/products/new", class: "nav-link") do %>
                 New Product <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products/new") %>

@@ -3,7 +3,7 @@
 <p><%= @product.description %></p>
 <p><%= @product.price_format %></p>
 
-<% if user_signed_in? %>
+<% if user_signed_in? && current_user.is_admin? %>
   <%= link_to("Edit Product", "/products/#{@product.id}/edit", class: "btn btn-primary") %>
   <%= link_to("Delete Product", "/products/#{@product.id}", method: :delete, class: "btn btn-danger") %>
 <% end %>

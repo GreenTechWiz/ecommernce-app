@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  
+  before_action :authenticate_admin!, except: [:index, :show]
+
   def index
     #if this exist, then do this
     if params[:category_id] && Category.ids.include?(params[:category_id].to_i)
@@ -20,20 +21,25 @@ class ProductsController < ApplicationController
   end
 
   def new
+    @product = Product.new
     @categories = Category.all
   end
 
   def create
-    product = Product.new(name: params[:name],
+    @product = Product.new(name: params[:name],
                           description: params[:description],
                           price: params[:price],
                           image_tag: params[:image_tag],
                           category_id: params[:category_id]
                           )
-    product.save
-    puts product.errors.full_messages
-    flash[:success] = "Product created!"
-    redirect_to "/products/#{product.id}"
+    if @product.save
+      flash[:success] = "Product created!"
+      redirect_to "/products/#{product.id}"
+    else
+      @categories = Category.all
+      flash[:error] = "Something went wrong"
+      render 'new'
+    end
   end
 
   def edit
@@ -42,15 +48,20 @@ class ProductsController < ApplicationController
   end
 
   def update
-    product = Product.find(params[:id])
-    product.update(name: params[:name],
+    @product = Product.find(params[:id])
+    if @product.update(name: params[:name],
                   description: params[:description],
                   price: params[:price],
                   image_tag: params[:image_tag],
                   category_id: params[:category_id]
                   )
     flash[:success] = "Stock shifted around!"
-    redirect_to "/products/#{product.id}"
+    redirect_to "/products/#{@product.id}"
+    else
+      flash[:error] = "Somthing went wrong"
+      @categories = Category.all
+      render 'edit'
+    end 
   end
 
   def destroy
