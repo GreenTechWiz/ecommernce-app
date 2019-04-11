@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  has_many :user_products
+  has_many :user, through: :user_products
   validates :name, length: {maximum: 40}, presence: true
   belongs_to :category
   validates :description, length: {maximum: 500}, presence: true
