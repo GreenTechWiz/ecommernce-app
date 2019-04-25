@@ -5,67 +5,65 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <%= link_to("Mirri's Wares", "/", class: "navbar-brand")%>
+      <%= link_to("Skyrim Wares", "/", class: "navbar-brand") %>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item <%= 'active' if current_page?('/products') %>">
             <%= link_to("/products", class: "nav-link") do %>
-              All Products <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products") %>
+              Wares <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products") %>
             <% end %>
           </li>
 
           <li class="nav-item <%= 'active' if current_page?('/cart') %>">
             <%= link_to("/cart", class: "nav-link") do %>
-              All Products <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/cart") %>
+              Cart <i class="fas fa-shopping-cart"></i> <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/cart") %>
             <% end %>
           </li>
 
           <% if user_signed_in? && current_user.is_admin? %>
             <li class="nav-item <%= 'active' if current_page?('/products/new') %>">
               <%= link_to("/products/new", class: "nav-link") do %>
-                New Product <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products/new") %>
+                Add New Product <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products/new") %>
               <% end %>
             </li>
           <% end %>
 
-          <% if user_signed_in? %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= user_signed_in? ? current_user.first_name : "Profile" %>
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <% if user_signed_in? %>
-                  <%= link_to('Edit Profile', edit_user_registration_path, class: "dropdown-item") %>
-                  <div class="dropdown-divider"></div>  
-                  <%= link_to('Logout', destroy_user_session_path, method: :delete, class: "dropdown-item") %>
-                <% else %>
-                  <% link_to "Sign up", new_user_registration_path, class: "dropdown-item" %>
-                  <div class="dropdown-divider"></div>
-                  <% link_to("Login", new_user_session_path, class: "dropdown-item") %>
-                <% end %>
-              </div>
-            </li>
-          <% else %>
-            <li class="nav-item <%= 'active' if current_page?('/users/sign_in') %>">
-              <%= link_to("/users/sign_in", class: "nav-link") do %>
-                Log In <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/users/sign_in") %>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= user_signed_in? ? current_user.first_name : "Profile" %>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <% if user_signed_in? %>
+                <%= link_to('Edit Profile', edit_user_registration_path, class: "dropdown-item") %>
+                <%= link_to('Order History', "/orders", class: "dropdown-item") %>
+
+                <div class="dropdown-divider"></div>
+                <%= link_to('Logout', destroy_user_session_path, method: :delete, class: "dropdown-item") %>
+              <% else %>
+                <%= link_to("Login", new_user_session_path, class: "dropdown-item") %>
+                <div class="dropdown-divider"></div>
+                <%= link_to("Sign up", new_user_registration_path, class: "dropdown-item") %>
               <% end %>
-            </li>
-          <% end %>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>
+
 
     <div class="container main-content">
       <%= flash_messages %>

@@ -5,16 +5,29 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :user_products
   has_many :products, through: :user_products
+  has_many :orders
 
   def products_in_cart
-    user_products.where(removed_from_cart: false)    
+    user_products.where(removed_from_cart: false, order_id: nil)
   end
 
   def total_price_in_cart
-    cart = 0
-    cart = products_in_cart.map { |products| products.values[1] }
-    "$%.2f" % (cart.inject(:+) / 100.00)
+    sum = 0
+
+    products_in_cart.each do |user_product|
+      sum += user_product.product[:price]
+    end
+
+    "$%.2f" % (sum / 100.00)
   end
-  
-  
+
+   def total_price_in_cart_for_stripe
+    sum = 0
+
+    products_in_cart.each do |user_product|
+      sum += user_product.product[:price]
+    end
+
+    sum
+  end
 end

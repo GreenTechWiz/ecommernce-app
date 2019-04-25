@@ -29,7 +29,7 @@ class ProductsController < ApplicationController
     @product = Product.new(name: params[:name],
                           description: params[:description],
                           price: params[:price],
-                          image_tag: params[:image_tag],
+                          image: params[:image],
                           category_id: params[:category_id]
                           )
     if @product.save
@@ -52,7 +52,7 @@ class ProductsController < ApplicationController
     if @product.update(name: params[:name],
                   description: params[:description],
                   price: params[:price],
-                  image_tag: params[:image_tag],
+                  image: params[:image],
                   category_id: params[:category_id]
                   )
     flash[:success] = "Stock shifted around!"
